@@ -23,13 +23,7 @@ export interface ColumnProps {
     index: number,
   ) => void;
   onDragOver: (e: DragEvent) => void;
-  onDrop: (
-    skill: string,
-    source: string,
-    sourceIndex: number,
-    target: string,
-    targetIndex?: number,
-  ) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void; // Changé ici
   isCompetences?: boolean;
   onTouchStart?: (skill: string, source: string, index: number) => void;
   onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
