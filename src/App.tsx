@@ -7,7 +7,7 @@ const AppBackground = ({ children }) => (
     <div
       className="fixed inset-0 z-0"
       style={{
-        backgroundImage: "url('/fdp_sacados.png')",
+        backgroundImage: "url('/fdp_sacados2.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -58,7 +58,7 @@ const SkillList = ({
 
 const Backpack = ({ skills, onDragStart, onDragOver, onDrop }) => (
   <div
-    className="self-end mb-2 w-[580px] rounded-lg p-4 translate-x-[180px]"
+    className="self-end mb-2 w-[580px] rounded-lg p-4 translate-x-[335px]"
     style={{ marginTop: "320px", marginLeft: "20px" }}
   >
     <div className="text-center gap-16">
