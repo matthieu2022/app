@@ -50,15 +50,8 @@ const SkillList = ({
   onDrop,
   isCompetences,
 }: ColumnProps) => (
-  <div className="w-full md:flex-1 md:max-w-xl mt-[50px] md:mt-[150px] mx-2 md:ml-[20px]">
-    <div className="flex items-center justify-center mb-4">
-      {/*<h2 className="text-lg font-semibold">{title}</h2>*/}
-    </div>
-    <div
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, id)}
-      className="grid grid-cols-1 sm:grid-cols-2 gap-2"
-    >
+  <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">  {/* Modifié ici */}
+    <div className="grid grid-cols-1 gap-2">
       {items.map((skill, index) => (
         <div
           key={index}
@@ -68,7 +61,7 @@ const SkillList = ({
             isCompetences
               ? "border-pink-200 bg-pink-50"
               : "border-blue-200 bg-blue-50"
-          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[60px] flex items-center justify-center text-center`}
+          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center`}
         >
           {skill}
         </div>
@@ -77,70 +70,50 @@ const SkillList = ({
   </div>
 );
 
-const Backpack = ({
-  skills,
-  onDragStart,
-  onDragOver,
-  onDrop,
-}: BackpackProps) => (
-  <div
-    className={`
-      w-full md:w-[580px] rounded-lg p-2 md:p-4 mx-auto md:translate-x-[180px]
-      mt-[20px] md:mt-[320px] md:ml-[20px]
-    `}
-  >
-    <div className="text-center gap-4 md:gap-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {/* Colonne Soft Skills */}
-        <div>
-          <div className="space-y-2">
-            {skills.backpack.slice(0, 5).map((skill, index) => (
+const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
+  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4"> {/* Modifié ici */}
+    <div className="grid grid-cols-2 gap-4">
+      {/* Colonne Soft Skills */}
+      <div className="space-y-2">
+        {skills.backpack.slice(0, 5).map((skill, index) => (
+          <div
+            key={index}
+            onDragOver={onDragOver}
+            onDrop={(e) => onDrop(e, "backpack", index)}
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
+          >
+            {skill && (
               <div
-                key={index}
-                onDragOver={onDragOver}
-                onDrop={(e) => onDrop(e, "backpack", index)}
-                className="h-16 md:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-2 md:ml-[30px]"
+                draggable
+                onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
+                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
               >
-                {skill && (
-                  <div
-                    draggable
-                    onDragStart={(e) =>
-                      onDragStart(e, skill, "backpack", index)
-                    }
-                    className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
-                  >
-                    {skill}
-                  </div>
-                )}
+                {skill}
               </div>
-            ))}
+            )}
           </div>
-        </div>
-        {/* Colonne Compétences */}
-        <div>
-          <div className="space-y-2">
-            {skills.backpack.slice(5, 10).map((skill, index) => (
+        ))}
+      </div>
+      {/* Colonne Compétences */}
+      <div className="space-y-2">
+        {skills.backpack.slice(5, 10).map((skill, index) => (
+          <div
+            key={index + 5}
+            onDragOver={onDragOver}
+            onDrop={(e) => onDrop(e, "backpack", index + 5)}
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
+          >
+            {skill && (
               <div
-                key={index + 5}
-                onDragOver={onDragOver}
-                onDrop={(e) => onDrop(e, "backpack", index + 5)}
-                className="h-16 md:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-2 md:ml-[35px]"
+                draggable
+                onDragStart={(e) => onDragStart(e, skill, "backpack", index + 5)}
+                className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
               >
-                {skill && (
-                  <div
-                    draggable
-                    onDragStart={(e) =>
-                      onDragStart(e, skill, "backpack", index + 5)
-                    }
-                    className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
-                  >
-                    {skill}
-                  </div>
-                )}
+                {skill}
               </div>
-            ))}
+            )}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   </div>
@@ -421,80 +394,91 @@ const App = () => {
 
   return (
     <AppBackground>
-      {/* Colonne Soft Skills */}
-      <SkillList
-        id="softSkills"
-        title="Soft Skills"
-        items={skills.softSkills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        isCompetences={false}
-      />
-
-      {/* Colonne Compétences */}
-      <SkillList
-        id="specificSkills"
-        title="Compétences"
-        items={skills.specificSkills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        isCompetences={true}
-      />
-
-      {/* Sac à dos */}
-      <Backpack
-        skills={skills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-      />
-
-      {showResults && (
-        <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg">
-          <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
-            Résultats de votre recherche de profil
-          </CardHeader>
-          <CardContent className="p-2 md:p-4">
-            <div className="space-y-2">
-              <hr />
-              <h3 className="font-semibold">
-                Le Profil que nous trouvons selon vos choix de Soft Skills
-              </h3>
-              <hr />
-              <p className="text-center font-bold text-[#308dc2] uppercase text-lg">
-                {results.softSkills || "Aucun résultat"}
-              </p>
-              <hr />
-              <h3 className="font-semibold">
-                Le Profil que nous trouvons selon vos choix de Compétences
-              </h3>
-              <hr />
-              <p className="text-center font-bold text-[#308dc2] uppercase text-lg">
-                {results.specificSkills || "Aucun résultat"}
-              </p>
+      <div className="w-full min-h-screen relative">
+        <div className="container mx-auto px-2 md:px-4">
+          <div className="flex flex-col md:flex-row justify-center items-start gap-4 md:gap-8">
+            {/* Colonne gauche */}
+            <div className="w-full md:w-1/3 lg:w-1/4">
+              <SkillList
+                id="softSkills"
+                title="Soft Skills"
+                items={skills.softSkills}
+                onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                isCompetences={false}
+              />
             </div>
-          </CardContent>
-        </Card>
-      )}
 
-      <div className="fixed bottom-4 right-2 md:right-4 space-x-2">
-        <Button
-          onClick={handleShowResults}
-          className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
-        >
-          Résultats
-        </Button>
-        <Button
-          onClick={resetApp}
-          className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
-        >
-          Réinitialiser
-        </Button>
+            {/* Colonne du milieu */}
+            <div className="w-full md:w-1/3 lg:w-1/4">
+              <SkillList
+                id="specificSkills"
+                title="Compétences"
+                items={skills.specificSkills}
+                onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                isCompetences={true}
+              />
+            </div>
+
+            {/* Colonne droite (Sac à dos) */}
+            <div className="w-full md:w-1/3">
+              <Backpack
+                skills={skills}
+                onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+              />
+            </div>
+          </div>
+
+          {/* Modal des résultats */}
+          {showResults && (
+            <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg z-50">
+              <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
+                Résultats de votre recherche de profil
+              </CardHeader>
+              <CardContent className="p-2 md:p-4">
+                <div className="space-y-2">
+                  <hr />
+                  <h3 className="font-semibold">
+                    Le Profil que nous trouvons selon vos choix de Soft Skills
+                  </h3>
+                  <hr />
+                  <p className="text-center font-bold text-[#308dc2] uppercase text-sm md:text-lg">
+                    {results.softSkills || "Aucun résultat"}
+                  </p>
+                  <hr />
+                  <h3 className="font-semibold">
+                    Le Profil que nous trouvons selon vos choix de Compétences
+                  </h3>
+                  <hr />
+                  <p className="text-center font-bold text-[#308dc2] uppercase text-sm md:text-lg">
+                    {results.specificSkills || "Aucun résultat"}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Boutons */}
+          <div className="fixed bottom-4 right-2 md:right-4 space-x-2 z-50">
+            <Button
+              onClick={handleShowResults}
+              className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+            >
+              Résultats
+            </Button>
+            <Button
+              onClick={resetApp}
+              className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+            >
+              Réinitialiser
+            </Button>
+          </div>
+        </div>
       </div>
     </AppBackground>
   );
-};
-
-export default App;
