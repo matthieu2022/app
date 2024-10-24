@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
 import { SkillsState, DragEvent, ColumnProps, SkillListProps } from "./types";
+import "./styles.css";
 
 // Interfaces
 interface AppBackgroundProps {
@@ -18,11 +19,18 @@ interface BackpackProps {
   ) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
+  onTouchStart?: (skill: string, source: string, index: number) => void;
+  onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
 }
 
-// Composants
+interface DraggedItem {
+  skill: string;
+  source: string;
+  index: number;
+}
+
 const AppBackground = ({ children }: AppBackgroundProps) => (
-  <div className="min-h-screen p-2 md:p-4 relative">
+  <div className="min-h-screen p-2 md:p-4 relative overflow-x-hidden">
     <div
       className="fixed inset-0 z-0"
       style={{
@@ -33,7 +41,7 @@ const AppBackground = ({ children }: AppBackgroundProps) => (
         opacity: 0.8,
       }}
     />
-    <div className="relative z-10 max-w-full md:max-w-[1400px] mx-auto">
+    <div className="relative z-10 max-w-full md:max-w-[1400px] mx-auto px-2 md:px-0">
       <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
         {children}
       </div>
@@ -48,22 +56,24 @@ const SkillList = ({
   onDragStart,
   onDragOver,
   onDrop,
+  onTouchStart,
+  onTouchEnd,
   isCompetences,
 }: ColumnProps) => (
   <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
-    {" "}
-    {/* Modifié ici */}
     <div className="grid grid-cols-1 gap-2">
       {items.map((skill, index) => (
         <div
           key={index}
           draggable
           onDragStart={(e) => onDragStart(e, skill, id, index)}
+          onTouchStart={() => onTouchStart?.(skill, id, index)}
+          onTouchEnd={(e) => onTouchEnd?.(e, id, index)}
           className={`p-2 rounded-lg border-2 border-dashed ${
             isCompetences
               ? "border-pink-200 bg-pink-50"
               : "border-blue-200 bg-blue-50"
-          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center`}
+          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center active:scale-95`}
         >
           {skill}
         </div>
@@ -77,10 +87,10 @@ const Backpack = ({
   onDragStart,
   onDragOver,
   onDrop,
+  onTouchStart,
+  onTouchEnd,
 }: BackpackProps) => (
   <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
-    {" "}
-    {/* Modifié ici */}
     <div className="grid grid-cols-2 gap-4">
       {/* Colonne Soft Skills */}
       <div className="space-y-2">
@@ -89,13 +99,15 @@ const Backpack = ({
             key={index}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, "backpack", index)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
+            onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index)}
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-blue-300 transition-colors"
           >
             {skill && (
               <div
                 draggable
                 onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
-                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
+                onTouchStart={() => onTouchStart?.(skill, "backpack", index)}
+                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center active:scale-95"
               >
                 {skill}
               </div>
@@ -110,7 +122,8 @@ const Backpack = ({
             key={index + 5}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, "backpack", index + 5)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
+            onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index + 5)}
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-pink-300 transition-colors"
           >
             {skill && (
               <div
@@ -118,7 +131,10 @@ const Backpack = ({
                 onDragStart={(e) =>
                   onDragStart(e, skill, "backpack", index + 5)
                 }
-                className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
+                onTouchStart={() =>
+                  onTouchStart?.(skill, "backpack", index + 5)
+                }
+                className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center active:scale-95"
               >
                 {skill}
               </div>
@@ -130,7 +146,6 @@ const Backpack = ({
   </div>
 );
 
-// Composant principal
 const App = () => {
   const [skills, setSkills] = useState<SkillsState>({
     softSkills: [
@@ -176,7 +191,9 @@ const App = () => {
   });
 
   const [showResults, setShowResults] = useState(false);
+  const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
 
+  // Profils de compétences
   const profileSkills = {
     RHH: [
       "Empathie",
@@ -225,12 +242,30 @@ const App = () => {
     ],
   };
 
-  useEffect(() => {
-    console.log("⚡ useEffect triggered - Changement dans le backpack");
-    console.log("Contenu actuel du backpack:", skills.backpack);
-    updateResults();
-  }, [skills.backpack]);
+  // Gestionnaires d'événements tactiles
+  const handleTouchStart = (skill: string, source: string, index: number) => {
+    setDraggedItem({ skill, source, index });
+  };
 
+  const handleTouchEnd = (
+    e: React.TouchEvent,
+    target: string,
+    targetIndex?: number,
+  ) => {
+    e.preventDefault();
+    if (draggedItem) {
+      handleDrop(
+        draggedItem.skill,
+        draggedItem.source,
+        draggedItem.index,
+        target,
+        targetIndex,
+      );
+      setDraggedItem(null);
+    }
+  };
+
+  // Gestionnaires d'événements drag & drop
   const onDragStart = (
     e: DragEvent,
     skill: string,
@@ -244,35 +279,32 @@ const App = () => {
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
+    // Ajoutez une classe visuelle pour le feedback
+    const target = e.currentTarget as HTMLElement;
+    target.classList.add("drag-over");
   };
 
-  const onDrop = (
-    e: DragEvent,
+  const handleDrop = (
+    skill: string,
+    source: string,
+    sourceIndex: number,
     target: string,
     targetIndex: number | null = null,
   ) => {
-    e.preventDefault();
+    const isSoftSkill = source === "softSkills";
 
-    const skill = e.dataTransfer.getData("skill");
-    const source = e.dataTransfer.getData("source");
-    const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
+    const isValidDrop =
+      (target === "backpack" &&
+        ((isSoftSkill && targetIndex! < 5) ||
+          (!isSoftSkill && targetIndex! >= 5))) ||
+      (target === "softSkills" && source === "backpack" && sourceIndex < 5) ||
+      (target === "specificSkills" &&
+        source === "backpack" &&
+        sourceIndex >= 5);
+
+    if (!isValidDrop) return;
 
     setSkills((prevSkills) => {
-      const isSoftSkill = source === "softSkills";
-
-      const isValidDrop =
-        (target === "backpack" &&
-          ((isSoftSkill && targetIndex! < 5) ||
-            (!isSoftSkill && targetIndex! >= 5))) ||
-        (target === "softSkills" && source === "backpack" && sourceIndex < 5) ||
-        (target === "specificSkills" &&
-          source === "backpack" &&
-          sourceIndex >= 5);
-
-      if (!isValidDrop) {
-        return prevSkills;
-      }
-
       const newSkills = { ...prevSkills };
 
       if (source === "backpack") {
@@ -306,6 +338,7 @@ const App = () => {
       .slice(5, 10)
       .filter((skill): skill is string => skill !== null);
 
+    // Vérification des correspondances
     const rhhSoftSkills = softSkillsInBackpack.filter((skill) =>
       profileSkills.RHH.includes(skill),
     );
@@ -327,6 +360,7 @@ const App = () => {
       profileCompetencies.CATL.includes(skill),
     );
 
+    // Détermination des profils
     let softSkillsResult = "Profil non associé";
     let specificSkillsResult = "Profil non associé";
 
@@ -401,81 +435,100 @@ const App = () => {
       specificSkills: "",
     });
     setShowResults(false);
+    setDraggedItem(null);
   };
+
+  // Effect pour la mise à jour des résultats
+  useEffect(() => {
+    if (skills.backpack.some((skill) => skill !== null)) {
+      updateResults();
+    }
+  }, [skills.backpack]);
 
   return (
     <AppBackground>
-      {/* Colonne Soft Skills */}
-      <SkillList
-        id="softSkills"
-        title="Soft Skills"
-        items={skills.softSkills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        isCompetences={false}
-      />
+      <div className="w-full min-h-screen relative">
+        <div className="container mx-auto px-2 md:px-4">
+          <div className="flex flex-col md:flex-row justify-center items-start gap-4 md:gap-8">
+            {/* SkillLists */}
+            <SkillList
+              id="softSkills"
+              title="Soft Skills"
+              items={skills.softSkills}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={handleDrop}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              isCompetences={false}
+            />
+            <SkillList
+              id="specificSkills"
+              title="Compétences"
+              items={skills.specificSkills}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={handleDrop}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              isCompetences={true}
+            />
+            {/* Backpack */}
+            <Backpack
+              skills={skills}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={handleDrop}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            />
+          </div>
 
-      {/* Colonne Compétences */}
-      <SkillList
-        id="specificSkills"
-        title="Compétences"
-        items={skills.specificSkills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        isCompetences={true}
-      />
+          {/* Modal des résultats */}
+          {showResults && (
+            <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg z-50">
+              <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
+                Résultats de votre recherche de profil
+              </CardHeader>
+              <CardContent className="p-2 md:p-4">
+                <div className="space-y-2">
+                  <hr />
+                  <h3 className="font-semibold">
+                    Le Profil que nous trouvons selon vos choix de Soft Skills
+                  </h3>
+                  <hr />
+                  <p className="text-center font-bold text-[#308dc2] uppercase text-sm md:text-lg">
+                    {results.softSkills || "Aucun résultat"}
+                  </p>
+                  <hr />
+                  <h3 className="font-semibold">
+                    Le Profil que nous trouvons selon vos choix de Compétences
+                  </h3>
+                  <hr />
+                  <p className="text-center font-bold text-[#308dc2] uppercase text-sm md:text-lg">
+                    {results.specificSkills || "Aucun résultat"}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Sac à dos */}
-      <Backpack
-        skills={skills}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-      />
-
-      {showResults && (
-        <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg">
-          <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
-            Résultats de votre recherche de profil
-          </CardHeader>
-          <CardContent className="p-2 md:p-4">
-            <div className="space-y-2">
-              <hr />
-              <h3 className="font-semibold">
-                Le Profil que nous trouvons selon vos choix de Soft Skills
-              </h3>
-              <hr />
-              <p className="text-center font-bold text-[#308dc2] uppercase text-lg">
-                {results.softSkills || "Aucun résultat"}
-              </p>
-              <hr />
-              <h3 className="font-semibold">
-                Le Profil que nous trouvons selon vos choix de Compétences
-              </h3>
-              <hr />
-              <p className="text-center font-bold text-[#308dc2] uppercase text-lg">
-                {results.specificSkills || "Aucun résultat"}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      <div className="fixed bottom-4 right-2 md:right-4 space-x-2">
-        <Button
-          onClick={handleShowResults}
-          className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
-        >
-          Résultats
-        </Button>
-        <Button
-          onClick={resetApp}
-          className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
-        >
-          Réinitialiser
-        </Button>
+          {/* Boutons */}
+          <div className="fixed bottom-4 right-2 md:right-4 space-x-2 z-50">
+            <Button
+              onClick={handleShowResults}
+              className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+            >
+              Résultats
+            </Button>
+            <Button
+              onClick={resetApp}
+              className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+            >
+              Réinitialiser
+            </Button>
+          </div>
+        </div>
       </div>
     </AppBackground>
   );
