@@ -222,12 +222,34 @@ const App = () => {
     ],
     backpack: Array(10).fill(null),
   });
-
+  
   const [results, setResults] = useState({
     softSkills: "",
     specificSkills: "",
   });
 
+  const [showResults, setShowResults] = useState(false);
+  
+  const [results, setResults] = useState({
+    softSkills: "",
+    specificSkills: "",
+  });
+  
+  // Ajoutez ces nouveaux états
+  const [draggedItem, setDraggedItem] = useState<{
+    skill: string;
+    source: string;
+    index: number;
+  } | null>(null);
+
+  const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Ajoutez effet
+  useEffect(() => {
+    setIsDragging(!!draggedItem);
+  }, [draggedItem]);
+  
   const [showResults, setShowResults] = useState(false);
   const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
 
@@ -286,27 +308,46 @@ const App = () => {
     ],
   };
 
-  // Gestionnaires d'événements tactiles
+  // Gestionnaires tactiles
   const handleTouchStart = (skill: string, source: string, index: number) => {
     setDraggedItem({ skill, source, index });
   };
 
-  const handleTouchEnd = (
-    e: React.TouchEvent,
-    target: string,
-    targetIndex?: number,
-  ) => {
-    e.preventDefault();
-    if (draggedItem) {
-      handleDrop(
-        draggedItem.skill,
-        draggedItem.source,
-        draggedItem.index,
-        target,
-        targetIndex,
-      );
-      setDraggedItem(null);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!draggedItem) return;
+
+    const touch = e.touches[0];
+    const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+    const dropTarget = elements.find(el => el.getAttribute('data-droppable') === 'true');
+
+    if (dropTarget) {
+      dropTarget.classList.add('drag-over');
     }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent, target: string, targetIndex?: number) => {
+    if (!draggedItem) return;
+
+    const touch = e.changedTouches[0];
+    const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+    const dropTarget = elements.find(el => el.getAttribute('data-droppable') === 'true');
+
+    if (dropTarget) {
+      const targetId = dropTarget.getAttribute('data-target');
+      const targetIndex = dropTarget.getAttribute('data-index');
+
+      if (targetId) {
+        handleDrop(
+          draggedItem.skill,
+          draggedItem.source,
+          draggedItem.index,
+          targetId,
+          targetIndex ? parseInt(targetIndex, 10) : undefined
+        );
+      }
+    }
+
+    setDraggedItem(null);
   };
 
   // Gestionnaires d'événements drag & drop
@@ -501,13 +542,10 @@ const App = () => {
               items={skills.softSkills}
               onDragStart={onDragStart}
               onDragOver={onDragOver}
-              onDrop={(e, target, targetIndex) => {
+              onDrop={(e: DragEvent, target: string, targetIndex?: number) => {
                 const skill = e.dataTransfer.getData("skill");
                 const source = e.dataTransfer.getData("source");
-                const sourceIndex = parseInt(
-                  e.dataTransfer.getData("sourceIndex"),
-                  10,
-                );
+                const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
                 handleDrop(skill, source, sourceIndex, target, targetIndex);
               }}
               onTouchStart={handleTouchStart}

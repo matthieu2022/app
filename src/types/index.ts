@@ -112,3 +112,15 @@ export interface DragFeedback {
   isDragging: boolean;
   canDrop: boolean;
 }
+
+export interface DraggedItem {
+  skill: string;
+  source: string;
+  index: number;
+}
+
+export interface TouchHandlers {
+  onTouchStart?: (skill: string, source: string, index: number) => void;
+  onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
+  onTouchMove?: (e: React.TouchEvent) => void;
+}
