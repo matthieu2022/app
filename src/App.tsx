@@ -10,15 +10,21 @@ const App = () => {
     backpack: []
   });
 
-  const handleDragStart = (e: DragEvent, skill: string, source: string, index: number)
+  const handleDragStart = (e: DragEvent, skill: string, source: string, index: number) => {
+    // votre code
+  };
 
     const Column = ({ id, title, items, onDragStart, onDragOver, onDrop, isCompetences }: ColumnProps) => {};
 
-    const SkillList = ({ skills, onDragStart, onDragOver, onDrop }: SkillListProps) => {
-      // Votre code existant
-    };
-    
-const AppBackground = ({ children }) => (
+  const SkillList = ({ skills, onDragStart, onDragOver, onDrop }: SkillListProps) => {
+    // Votre code existant
+  };
+
+  interface AppBackgroundProps {
+    children: React.ReactNode;
+  }
+  
+  const AppBackground = ({ children }: AppBackgroundProps) => (
   <div className="min-h-screen p-4 relative">
     <div
       className="fixed inset-0 z-0"
@@ -36,15 +42,15 @@ const AppBackground = ({ children }) => (
   </div>
 );
 
-const SkillList = ({
-  id,
-  title,
-  items,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  isCompetences,
-}) => (
+  const SkillList = ({
+    id,
+    title,
+    items,
+    onDragStart,
+    onDragOver,
+    onDrop,
+    isCompetences,
+  }: ColumnProps) => (
   <div className="flex-1 max-w-xl mt-[150px] ml-[20px]">
     <div className="flex items-center justify-center mb-4">
       {/*<h2 className="text-lg font-semibold">{title}</h2>*/}
@@ -72,7 +78,14 @@ const SkillList = ({
   </div>
 );
 
-const Backpack = ({ skills, onDragStart, onDragOver, onDrop }) => (
+  interface BackpackProps {
+    skills: SkillsState;
+    onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+    onDragOver: (e: DragEvent) => void;
+    onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
+  }
+  
+  const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
   <div
     className="self-end mb-2 w-[580px] rounded-lg p-4 translate-x-[180px]"
     style={{ marginTop: "320px", marginLeft: "20px" }}
