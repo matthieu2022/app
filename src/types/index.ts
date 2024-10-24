@@ -1,9 +1,9 @@
-// src/types/index.ts
+import React from "react"; // Ajoutez cette ligne
 
 export interface SkillsState {
   softSkills: string[];
   specificSkills: string[];
-  backpack: any[];
+  backpack: (string | null)[]; // Changé de any[] à (string | null)[]
 }
 
 export interface DragEvent extends React.DragEvent<HTMLDivElement> {
@@ -14,15 +14,28 @@ export interface ColumnProps {
   id: string;
   title: string;
   items: string[];
-  onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+  onDragStart: (
+    e: DragEvent,
+    skill: string,
+    source: string,
+    index: number,
+  ) => void;
   onDragOver: (e: DragEvent) => void;
-  onDrop: (e: DragEvent, target: string) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void; // Ajout du paramètre targetIndex optionnel
   isCompetences?: boolean;
 }
 
 export interface SkillListProps {
-  skills: string[];
-  onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+  id: string; // Ajout de l'id manquant
+  title: string; // Ajout du title manquant
+  items: string[];
+  onDragStart: (
+    e: DragEvent,
+    skill: string,
+    source: string,
+    index: number,
+  ) => void;
   onDragOver: (e: DragEvent) => void;
-  onDrop: (e: DragEvent, target: string) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void; // Ajout du paramètre targetIndex optionnel
+  isCompetences?: boolean; // Ajout de isCompetences manquant
 }
