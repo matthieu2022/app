@@ -84,14 +84,10 @@ const Backpack = ({
   onDrop,
 }: BackpackProps) => (
   <div
-    className="w-full md:w-[580px] rounded-lg p-2 md:p-4 mx-auto md:translate-x-[180px]"
-    style={{
-      marginTop: "20px",
-      "@media (min-width: 768px)": {
-        marginTop: "320px",
-        marginLeft: "20px",
-      },
-    }}
+    className={`
+      w-full md:w-[580px] rounded-lg p-2 md:p-4 mx-auto md:translate-x-[180px]
+      mt-[20px] md:mt-[320px] md:ml-[20px]
+    `}
   >
     <div className="text-center gap-4 md:gap-16">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
