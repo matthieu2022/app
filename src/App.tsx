@@ -3,6 +3,18 @@ import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
 import { SkillsState, DragEvent, ColumnProps, SkillListProps } from './types';
 
+// Interfaces
+interface AppBackgroundProps {
+  children: React.ReactNode;
+}
+
+interface BackpackProps {
+  skills: SkillsState;
+  onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+  onDragOver: (e: DragEvent) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
+}
+
 const App = () => {
   const [skills, setSkills] = useState<SkillsState>({
     softSkills: ["Communication", "Leadership"],
@@ -19,10 +31,6 @@ const App = () => {
   const SkillList = ({ skills, onDragStart, onDragOver, onDrop }: SkillListProps) => {
     // Votre code existant
   };
-
-  interface AppBackgroundProps {
-    children: React.ReactNode;
-  }
   
   const AppBackground = ({ children }: AppBackgroundProps) => (
   <div className="min-h-screen p-4 relative">
@@ -77,13 +85,6 @@ const App = () => {
     </div>
   </div>
 );
-
-  interface BackpackProps {
-    skills: SkillsState;
-    onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
-    onDragOver: (e: DragEvent) => void;
-    onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
-  }
   
   const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
   <div
