@@ -30,17 +30,7 @@ interface DraggedItem {
 }
 
 const AppBackground = ({ children }: AppBackgroundProps) => (
-  <div className="min-h-screen p-2 md:p-4 relative overflow-x-hidden">
-    <div
-      className="fixed inset-0 z-0"
-      style={{
-        backgroundImage: "url('/fdp_sacados.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        opacity: 0.8,
-      }}
-    />
+  <div className="min-h-screen p-2 md:p-4 relative overflow-x-hidden bg-gray-50">
     <div className="relative z-10 max-w-full md:max-w-[1400px] mx-auto px-2 md:px-0">
       <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
         {children}
@@ -56,33 +46,28 @@ const SkillList = ({
   onDragStart,
   onDragOver,
   onDrop,
-  onTouchStart,
-  onTouchEnd,
   isCompetences,
 }: ColumnProps) => (
   <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
+    {/* Ajout de l'icône en haut */}
+    <div className="w-full flex justify-center mb-4">
+      <img 
+        src={isCompetences ? "/ico-competences.png" : "/ico-softskills.png"} 
+        alt={isCompetences ? "Compétences" : "Soft Skills"}
+        className="w-16 h-16 md:w-20 md:h-20 object-contain"
+      />
+    </div>
     <div className="grid grid-cols-1 gap-2">
       {items.map((skill, index) => (
         <div
           key={index}
-          draggable="true"
+          draggable
           onDragStart={(e) => onDragStart(e, skill, id, index)}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            onTouchStart?.(skill, id, index);
-          }}
-          onTouchMove={(e) => {
-            e.preventDefault();
-          }}
-          onTouchEnd={(e) => {
-            e.preventDefault();
-            onTouchEnd?.(e, id, index);
-          }}
-          className={`skill-item p-2 rounded-lg border-2 border-dashed ${
+          className={`p-2 rounded-lg border-2 border-dashed ${
             isCompetences
               ? "border-pink-200 bg-pink-50"
               : "border-blue-200 bg-blue-50"
-          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center active:scale-95`}
+          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center`}
         >
           {skill}
         </div>
@@ -142,42 +127,31 @@ const handleTouchEnd = (
   setDraggedItem(null);
 };
 
-const Backpack = ({
-  skills,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  onTouchStart,
-  onTouchEnd,
-}: BackpackProps) => (
-  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
-    <div className="grid grid-cols-2 gap-4">
+const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
+  <div className="relative w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
+    {/* Image du sac à dos en arrière-plan */}
+    <div className="absolute inset-0 pointer-events-none">
+      <img 
+        src="/sacados.png" 
+        alt="Sac à dos"
+        className="w-full h-full object-contain opacity-90"
+      />
+    </div>
+    <div className="grid grid-cols-2 gap-4 relative z-10">
       {/* Colonne Soft Skills */}
       <div className="space-y-2">
         {skills.backpack.slice(0, 5).map((skill, index) => (
           <div
             key={index}
-            data-droppable="true"
-            data-target="backpack"
-            data-index={index}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, "backpack", index)}
-            onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-blue-300 transition-colors"
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
           >
             {skill && (
               <div
                 draggable
-                data-draggable="true"
-                data-skill={skill}
-                data-source="backpack"
-                data-index={index}
                 onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  onTouchStart?.(skill, "backpack", index);
-                }}
-                className="skill-item bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center active:scale-95"
+                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
               >
                 {skill}
               </div>
@@ -185,35 +159,20 @@ const Backpack = ({
           </div>
         ))}
       </div>
-
       {/* Colonne Compétences */}
       <div className="space-y-2">
         {skills.backpack.slice(5, 10).map((skill, index) => (
           <div
             key={index + 5}
-            data-droppable="true"
-            data-target="backpack"
-            data-index={index + 5}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, "backpack", index + 5)}
-            onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index + 5)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-pink-300 transition-colors"
+            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
           >
             {skill && (
               <div
                 draggable
-                data-draggable="true"
-                data-skill={skill}
-                data-source="backpack"
-                data-index={index + 5}
-                onDragStart={(e) =>
-                  onDragStart(e, skill, "backpack", index + 5)
-                }
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  onTouchStart?.(skill, "backpack", index + 5);
-                }}
-                className="skill-item bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center active:scale-95"
+                onDragStart={(e) => onDragStart(e, skill, "backpack", index + 5)}
+                className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
               >
                 {skill}
               </div>
