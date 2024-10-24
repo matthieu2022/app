@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
+import { SkillsState, DragEvent, ColumnProps, SkillListProps } from './types';
 
+const App = () => {
+  const [skills, setSkills] = useState<SkillsState>({
+    softSkills: ["Communication", "Leadership"],
+    specificSkills: ["React", "TypeScript"],
+    backpack: []
+  });
+
+  const handleDragStart = (e: DragEvent, skill: string, source: string, index: number)
+
+    const Column = ({ id, title, items, onDragStart, onDragOver, onDrop, isCompetences }: ColumnProps) => {
+      // Votre code existant
+    };
+
+    const SkillList = ({ skills, onDragStart, onDragOver, onDrop }: SkillListProps) => {
+      // Votre code existant
+    };
+    
 const AppBackground = ({ children }) => (
   <div className="min-h-screen p-4 relative">
     <div
