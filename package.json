@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
+    "clsx": "^2.1.1",
     "html2canvas": "^1.4.1",
-    "nodemailer": "^6.9.15"
+    "nodemailer": "^6.9.15",
+    "tailwind-merge": "^2.5.4"
   }
 }

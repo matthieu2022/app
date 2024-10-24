@@ -22,7 +22,7 @@ interface BackpackProps {
 
 // Composants
 const AppBackground = ({ children }: AppBackgroundProps) => (
-  <div className="min-h-screen p-4 relative">
+  <div className="min-h-screen p-2 md:p-4 relative">
     <div
       className="fixed inset-0 z-0"
       style={{
@@ -33,8 +33,10 @@ const AppBackground = ({ children }: AppBackgroundProps) => (
         opacity: 0.8,
       }}
     />
-    <div className="relative z-10 max-w-[1400px]">
-      <div className="flex justify-center items-start gap-8">{children}</div>
+    <div className="relative z-10 max-w-full md:max-w-[1400px] mx-auto">
+      <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
+        {children}
+      </div>
     </div>
   </div>
 );
@@ -48,14 +50,14 @@ const SkillList = ({
   onDrop,
   isCompetences,
 }: ColumnProps) => (
-  <div className="flex-1 max-w-xl mt-[150px] ml-[20px]">
+  <div className="w-full md:flex-1 md:max-w-xl mt-[50px] md:mt-[150px] mx-2 md:ml-[20px]">
     <div className="flex items-center justify-center mb-4">
       {/*<h2 className="text-lg font-semibold">{title}</h2>*/}
     </div>
     <div
       onDragOver={onDragOver}
       onDrop={(e) => onDrop(e, id)}
-      className="grid grid-cols-2 gap-2"
+      className="grid grid-cols-1 sm:grid-cols-2 gap-2"
     >
       {items.map((skill, index) => (
         <div
@@ -66,7 +68,7 @@ const SkillList = ({
             isCompetences
               ? "border-pink-200 bg-pink-50"
               : "border-blue-200 bg-blue-50"
-          } text-sm cursor-move hover:shadow-md transition-shadow min-h-[60px] flex items-center justify-center text-center`}
+          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[60px] flex items-center justify-center text-center`}
         >
           {skill}
         </div>
@@ -82,11 +84,18 @@ const Backpack = ({
   onDrop,
 }: BackpackProps) => (
   <div
-    className="self-end mb-2 w-[580px] rounded-lg p-4 translate-x-[180px]"
-    style={{ marginTop: "320px", marginLeft: "20px" }}
+    className="w-full md:w-[580px] rounded-lg p-2 md:p-4 mx-auto md:translate-x-[180px]"
+    style={{
+      marginTop: "20px",
+      "@media (min-width: 768px)": {
+        marginTop: "320px",
+        marginLeft: "20px",
+      },
+    }}
   >
-    <div className="text-center gap-16">
-      <div className="grid grid-cols-2 gap-2">
+    <div className="text-center gap-4 md:gap-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {/* Colonne Soft Skills */}
         <div>
           <div className="space-y-2">
             {skills.backpack.slice(0, 5).map((skill, index) => (
@@ -94,7 +103,7 @@ const Backpack = ({
                 key={index}
                 onDragOver={onDragOver}
                 onDrop={(e) => onDrop(e, "backpack", index)}
-                className="h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-[30px]"
+                className="h-16 md:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-2 md:ml-[30px]"
               >
                 {skill && (
                   <div
@@ -102,7 +111,7 @@ const Backpack = ({
                     onDragStart={(e) =>
                       onDragStart(e, skill, "backpack", index)
                     }
-                    className="bg-blue-50 p-2 rounded text-sm cursor-move w-full h-full flex items-center justify-center"
+                    className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
                   >
                     {skill}
                   </div>
@@ -111,6 +120,7 @@ const Backpack = ({
             ))}
           </div>
         </div>
+        {/* Colonne Compétences */}
         <div>
           <div className="space-y-2">
             {skills.backpack.slice(5, 10).map((skill, index) => (
@@ -118,7 +128,7 @@ const Backpack = ({
                 key={index + 5}
                 onDragOver={onDragOver}
                 onDrop={(e) => onDrop(e, "backpack", index + 5)}
-                className="h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-[35px]"
+                className="h-16 md:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-2 md:ml-[35px]"
               >
                 {skill && (
                   <div
@@ -126,7 +136,7 @@ const Backpack = ({
                     onDragStart={(e) =>
                       onDragStart(e, skill, "backpack", index + 5)
                     }
-                    className="bg-pink-50 p-2 rounded text-sm cursor-move w-full h-full flex items-center justify-center"
+                    className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
                   >
                     {skill}
                   </div>
@@ -446,11 +456,11 @@ const App = () => {
       />
 
       {showResults && (
-        <Card className="fixed top-4 left-1/2 transform w-full max-w-2xl bg-white bg-opacity-85 shadow-lg">
-          <CardHeader className="bg-custom-blue font-semibold text-white text-center text-lg py-0.5">
+        <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg">
+          <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
             Résultats de votre recherche de profil
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-2 md:p-4">
             <div className="space-y-2">
               <hr />
               <h3 className="font-semibold">
@@ -473,16 +483,16 @@ const App = () => {
         </Card>
       )}
 
-      <div className="fixed bottom-4 right-4 space-x-2">
+      <div className="fixed bottom-4 right-2 md:right-4 space-x-2">
         <Button
           onClick={handleShowResults}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-[10px] pb-[10px] rounded-lg rounded-lg"
+          className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
         >
           Résultats
         </Button>
         <Button
           onClick={resetApp}
-          className="bg-red-500 hover:bg-red-600 text-white px-[10px] pb-[10px] rounded-lg rounded-lg"
+          className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-[10px] py-1 md:pb-[10px] rounded-lg"
         >
           Réinitialiser
         </Button>
