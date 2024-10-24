@@ -21,8 +21,20 @@ export interface ColumnProps {
     index: number,
   ) => void;
   onDragOver: (e: DragEvent) => void;
-  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void; // Ajout du paramètre targetIndex optionnel
+  onDrop: (e: DragEvent, target: string, index?: number) => void;
   isCompetences?: boolean;
+}
+
+export interface BackpackProps {
+  skills: SkillsState;
+  onDragStart: (
+    e: DragEvent,
+    skill: string,
+    source: string,
+    index: number,
+  ) => void;
+  onDragOver: (e: DragEvent) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
 }
 
 export interface SkillListProps {

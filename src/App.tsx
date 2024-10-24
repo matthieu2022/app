@@ -3,6 +3,72 @@ import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
 import { SkillsState, DragEvent, ColumnProps, SkillListProps } from "./types";
 
+const [draggedItem, setDraggedItem] = useState<{
+  skill: string;
+  source: string;
+  index: number;
+} | null>(null);
+
+// Gestionnaires d'événements tactiles
+const handleTouchStart = (skill: string, source: string, index: number) => {
+  setDraggedItem({ skill, source, index });
+};
+
+const handleTouchEnd = (e: React.TouchEvent, target: string, targetIndex?: number) => {
+  e.preventDefault();
+
+  if (draggedItem) {
+    handleDrop(draggedItem.skill, draggedItem.source, draggedItem.index, target, targetIndex);
+    setDraggedItem(null);
+  }
+};
+
+// Nouvelle méthode handleDrop
+const handleDrop = (
+  skill: string,
+  source: string,
+  sourceIndex: number,
+  target: string,
+  targetIndex: number | null = null
+) => {
+  const isSoftSkill = source === "softSkills";
+
+  const isValidDrop =
+    (target === "backpack" &&
+      ((isSoftSkill && targetIndex! < 5) ||
+        (!isSoftSkill && targetIndex! >= 5))) ||
+    (target === "softSkills" && source === "backpack" && sourceIndex < 5) ||
+    (target === "specificSkills" &&
+      source === "backpack" &&
+      sourceIndex >= 5);
+
+  if (!isValidDrop) {
+    return;
+  }
+
+  setSkills((prevSkills) => {
+    const newSkills = { ...prevSkills };
+
+    if (source === "backpack") {
+      newSkills.backpack[sourceIndex] = null;
+    } else {
+      newSkills[source as keyof SkillsState] = (newSkills[source as keyof SkillsState] as string[]).filter(
+        (s) => s !== skill
+      );
+    }
+
+    if (target === "backpack" && targetIndex !== null) {
+      if (newSkills.backpack[targetIndex] === null) {
+        newSkills.backpack[targetIndex] = skill;
+      }
+    } else {
+      newSkills[target as keyof SkillsState] = [...(newSkills[target as keyof SkillsState] as string[]), skill];
+    }
+
+    return newSkills;
+  });
+};
+
 // Interfaces
 interface AppBackgroundProps {
   children: React.ReactNode;
@@ -50,18 +116,20 @@ const SkillList = ({
   onDrop,
   isCompetences,
 }: ColumnProps) => (
-  <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">  {/* Modifié ici */}
+  <div className="w-full md:w-1/3 lg:w-1/4">
     <div className="grid grid-cols-1 gap-2">
       {items.map((skill, index) => (
         <div
           key={index}
           draggable
           onDragStart={(e) => onDragStart(e, skill, id, index)}
+          onTouchStart={() => handleTouchStart(skill, id, index)}
+          onTouchEnd={(e) => handleTouchEnd(e, id)}
           className={`p-2 rounded-lg border-2 border-dashed ${
             isCompetences
               ? "border-pink-200 bg-pink-50"
               : "border-blue-200 bg-blue-50"
-          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center`}
+          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center active:scale-95`}
         >
           {skill}
         </div>
@@ -71,7 +139,7 @@ const SkillList = ({
 );
 
 const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
-  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4"> {/* Modifié ici */}
+  <div className="w-full md:w-1/3">
     <div className="grid grid-cols-2 gap-4">
       {/* Colonne Soft Skills */}
       <div className="space-y-2">
@@ -80,13 +148,15 @@ const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) =>
             key={index}
             onDragOver={onDragOver}
             onDrop={(e) => onDrop(e, "backpack", index)}
+            onTouchEnd={(e) => handleTouchEnd(e, "backpack", index)}
             className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
           >
             {skill && (
               <div
                 draggable
                 onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
-                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
+                onTouchStart={() => handleTouchStart(skill, "backpack", index)}
+                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center active:scale-95"
               >
                 {skill}
               </div>
