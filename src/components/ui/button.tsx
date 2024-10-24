@@ -1,7 +1,18 @@
-import React from "react";
+import React from 'react';
 
-export const Button = ({ children, className, ...props }) => (
-  <button className={`button ${className}`} {...props}>
-    {children}
-  </button>
-);
+interface ButtonProps {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+export const Button = ({ children, className = '', onClick }: ButtonProps) => {
+  return (
+    <button
+      className={`px-4 py-2 font-semibold rounded ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
