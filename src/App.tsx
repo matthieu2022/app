@@ -12,9 +12,7 @@ const App = () => {
 
   const handleDragStart = (e: DragEvent, skill: string, source: string, index: number)
 
-    const Column = ({ id, title, items, onDragStart, onDragOver, onDrop, isCompetences }: ColumnProps) => {
-      // Votre code existant
-    };
+    const Column = ({ id, title, items, onDragStart, onDragOver, onDrop, isCompetences }: ColumnProps) => {};
 
     const SkillList = ({ skills, onDragStart, onDragOver, onDrop }: SkillListProps) => {
       // Votre code existant
