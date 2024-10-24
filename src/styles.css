@@ -2,12 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Nos styles personnalisés */
+.drag-over {
+  border-color: #4299e1;
+  border-style: solid;
+  opacity: 0.8;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+.can-drop {
+  border-color: #48bb78;
+}
+
+.cannot-drop {
+  border-color: #f56565;
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   touch-action: manipulation;
 }
