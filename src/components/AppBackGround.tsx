@@ -1,6 +1,10 @@
-import React from "react";
+import React, { ReactNode } from 'react';
 
-export function AppBackground({ children }: { children: React.ReactNode }) {
+interface AppBackgroundProps {
+  children: ReactNode;
+}
+
+export function AppBackground({ children }: AppBackgroundProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
       {children}
