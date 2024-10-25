@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface SkillsState {
   softSkills: string[];
   specificSkills: string[];
@@ -12,10 +14,13 @@ export interface DraggedItem {
 
 export type DragEvent = React.DragEvent<HTMLDivElement>;
 
-export interface ColumnProps {
-  title: string;
-  items: string[];
-  id: string;
+export interface BackpackProps {
+  skills: SkillsState;
+  onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+  onDragOver: (e: DragEvent) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
+  onTouchStart?: (skill: string, source: string, index: number) => void;
+  onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
 }
 
 export interface SkillListProps {
@@ -23,12 +28,7 @@ export interface SkillListProps {
   title: string;
   items: string[];
   isCompetences: boolean;
-  onDragStart: (
-    e: DragEvent,
-    skill: string,
-    source: string,
-    index: number
-  ) => void;
+  onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
   onTouchStart?: (skill: string, source: string, index: number) => void;
