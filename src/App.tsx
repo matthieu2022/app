@@ -60,8 +60,6 @@ const App = () => {
 
   const [showResults, setShowResults] = useState(false);
   const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
-  const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
 
   // Profils de compétences
   const profileSkills = {
