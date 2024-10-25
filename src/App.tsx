@@ -4,34 +4,17 @@ import { Button } from "./components/ui/button";
 import { AppBackground } from './components/AppBackground';
 import { SkillList } from './components/SkillList';
 import { Backpack } from './components/Backpack';
-import { 
-  SkillsState, 
-  DragEvent, 
-  DraggedItem 
-} from './types';
+import { SkillsState, DragEvent, DraggedItem } from './types';
 import "./styles.css";
-
-// Interfaces
 
 const App = () => {
   // États
   const [skills, setSkills] = useState<SkillsState>({
     softSkills: [
-      "Empathie",
-      "Organisation",
-      "Bonne communication",
-      "Adaptabilité",
-      "Esprit d'équipe",
-      "Leadership",
-      "Proactivité",
-      "Résolution de problèmes",
-      "Capacité de Négociation",
-      "Flexibilité",
-      "Sens du service",
-      "Créativité",
-      "Patience",
-      "Dynamisme",
-      "Curiosité",
+      "Empathie", "Organisation", "Bonne communication", "Adaptabilité",
+      "Esprit d'équipe", "Leadership", "Proactivité", "Résolution de problèmes",
+      "Capacité de Négociation", "Flexibilité", "Sens du service", "Créativité",
+      "Patience", "Dynamisme", "Curiosité",
     ],
     specificSkills: [
       "Accueillir, informer et conseiller le client",
@@ -62,30 +45,17 @@ const App = () => {
   const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
-  const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
-  
+
   // Profils de compétences
   const profileSkills = {
     RHH: [
-      "Empathie",
-      "Organisation",
-      "Bonne communication",
-      "Adaptabilité",
-      "Esprit d'équipe",
+      "Empathie", "Organisation", "Bonne communication", "Adaptabilité", "Esprit d'équipe"
     ],
     RET: [
-      "Leadership",
-      "Proactivité",
-      "Résolution de problèmes",
-      "Capacité de Négociation",
-      "Flexibilité",
+      "Leadership", "Proactivité", "Résolution de problèmes", "Capacité de Négociation", "Flexibilité"
     ],
     CATL: [
-      "Sens du service",
-      "Créativité",
-      "Patience",
-      "Dynamisme",
-      "Curiosité",
+      "Sens du service", "Créativité", "Patience", "Dynamisme", "Curiosité"
     ],
   };
 
@@ -113,64 +83,57 @@ const App = () => {
     ],
   };
 
-  // Effets
-  useEffect(() => {
-    setIsDragging(!!draggedItem);
-  }, [draggedItem]);
-
-  useEffect(() => {
-    if (skills.backpack.some((skill) => skill !== null)) {
-      updateResults();
+  // Gestionnaires d'événements
+  const onDragStart = (e: DragEvent, skill: string, source: string, index: number) => {
+    if (e.dataTransfer) {
+      e.dataTransfer.setData("skill", skill);
+      e.dataTransfer.setData("source", source);
+      e.dataTransfer.setData("sourceIndex", index.toString());
+      setIsDragging(true);
+      setDraggedItem({ skill, source, index });
     }
-  }, [skills.backpack]);
+  };
 
-  // Gestionnaires tactiles
+  const onDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    if (e.currentTarget) {
+      e.currentTarget.classList.add('drag-over');
+    }
+  };
+
+  const onDrop = (e: DragEvent, target: string, targetIndex: number | null = null) => {
+    e.preventDefault();
+    if (e.currentTarget) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    if (!e.dataTransfer) return;
+
+    const skill = e.dataTransfer.getData("skill");
+    const source = e.dataTransfer.getData("source");
+    const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
+
+    handleDrop(skill, source, sourceIndex, target, targetIndex);
+    setIsDragging(false);
+    setDraggedItem(null);
+  };
+
   const handleTouchStart = (skill: string, source: string, index: number) => {
     setDraggedItem({ skill, source, index });
-    setTouchStartPosition({ x: 0, y: 0 }); // Réinitialiser la position
+    setTouchStartPosition({ x: 0, y: 0 });
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!draggedItem) return;
-
-    const touch = e.touches[0];
-    const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-    const dropTarget = elements.find(
-      (el) => el.getAttribute("data-droppable") === "true"
-    );
-
-    // Retirer la classe drag-over de tous les éléments
-    document.querySelectorAll(".drag-over").forEach((el) => {
-      el.classList.remove("drag-over");
-    });
-
-    // Ajouter la classe drag-over à la cible valide
-    if (dropTarget) {
-      dropTarget.classList.add("drag-over");
-    }
-  };
-
-  const handleTouchEnd = (
-    e: React.TouchEvent,
-    target: string,
-    targetIndex?: number
-  ) => {
+  const handleTouchEnd = (e: React.TouchEvent, target: string, targetIndex?: number) => {
     e.preventDefault();
     if (!draggedItem) return;
 
     const touch = e.changedTouches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-    const dropTarget = elements.find(
-      (el) => el.getAttribute("data-droppable") === "true"
-    );
-
-    document.querySelectorAll(".drag-over").forEach((el) => {
-      el.classList.remove("drag-over");
-    });
+    const dropTarget = elements.find(el => el.getAttribute('data-droppable') === 'true');
 
     if (dropTarget) {
-      const targetId = dropTarget.getAttribute("data-target");
-      const dropIndex = dropTarget.getAttribute("data-index");
+      const targetId = dropTarget.getAttribute('data-target');
+      const dropIndex = dropTarget.getAttribute('data-index');
 
       if (targetId) {
         handleDrop(
@@ -184,34 +147,6 @@ const App = () => {
     }
 
     setDraggedItem(null);
-  };
-
-  // Gestionnaires drag & drop
-const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: string, index: number) => {
-  if (e.dataTransfer) {
-    e.dataTransfer.setData("skill", skill);
-    e.dataTransfer.setData("source", source);
-    e.dataTransfer.setData("sourceIndex", index.toString());
-  }
-};
-
-  const onDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    const target = e.currentTarget as HTMLElement;
-    target.classList.add("drag-over");
-  };
-
-  const onDrop = (
-    e: DragEvent,
-    target: string,
-    targetIndex: number | null = null
-  ) => {
-    e.preventDefault();
-    const skill = e.dataTransfer.getData("skill");
-    const source = e.dataTransfer.getData("source");
-    const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
-
-    handleDrop(skill, source, sourceIndex, target, targetIndex);
   };
 
   const handleDrop = (
@@ -239,6 +174,7 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
     setSkills((prevSkills) => {
       const newSkills = { ...prevSkills };
 
+      // Retirer de la source
       if (source === "backpack") {
         newSkills.backpack[sourceIndex] = null;
       } else {
@@ -247,6 +183,7 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
         ).filter((s) => s !== skill);
       }
 
+      // Ajouter à la cible
       if (target === "backpack" && targetIndex !== null) {
         if (newSkills.backpack[targetIndex] === null) {
           newSkills.backpack[targetIndex] = skill;
@@ -261,7 +198,7 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
       return newSkills;
     });
   };
-  // Fonction de mise à jour des résultats
+
   const updateResults = () => {
     const softSkillsInBackpack = skills.backpack
       .slice(0, 5)
@@ -307,8 +244,7 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
     } else if (retSpecificSkills.length >= 3) {
       specificSkillsResult = "Responsable d'Établissement Touristique (RET)";
     } else if (catlSpecificSkills.length >= 3) {
-      specificSkillsResult =
-        "Conseiller en Agence de Tourisme et Loisirs (CATL)";
+      specificSkillsResult = "Conseiller en Agence de Tourisme et Loisirs (CATL)";
     }
 
     setResults({
@@ -325,21 +261,10 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
   const resetApp = () => {
     setSkills({
       softSkills: [
-        "Empathie",
-        "Organisation",
-        "Bonne communication",
-        "Adaptabilité",
-        "Esprit d'équipe",
-        "Leadership",
-        "Proactivité",
-        "Résolution de problèmes",
-        "Capacité de Négociation",
-        "Flexibilité",
-        "Sens du service",
-        "Créativité",
-        "Patience",
-        "Dynamisme",
-        "Curiosité",
+        "Empathie", "Organisation", "Bonne communication", "Adaptabilité",
+        "Esprit d'équipe", "Leadership", "Proactivité", "Résolution de problèmes",
+        "Capacité de Négociation", "Flexibilité", "Sens du service", "Créativité",
+        "Patience", "Dynamisme", "Curiosité",
       ],
       specificSkills: [
         "Accueillir, informer et conseiller le client",
@@ -366,15 +291,22 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
     });
     setShowResults(false);
     setDraggedItem(null);
+    setIsDragging(false);
   };
 
-  // Rendu du composant
+  // useEffect pour la mise à jour des résultats
+  useEffect(() => {
+    if (skills.backpack.some(skill => skill !== null)) {
+      updateResults();
+    }
+  }, [skills.backpack]);
+
   return (
     <AppBackground>
       <div className="w-full min-h-screen relative">
         <div className="container mx-auto px-2 md:px-4">
           <div className="flex flex-col md:flex-row justify-center items-start gap-4 md:gap-8">
-            {/* SkillLists */}
+            {/* Colonne Soft Skills */}
             <SkillList
               id="softSkills"
               title="Soft Skills"
@@ -386,6 +318,8 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
               onTouchEnd={handleTouchEnd}
               isCompetences={false}
             />
+
+            {/* Colonne Compétences */}
             <SkillList
               id="specificSkills"
               title="Compétences"
@@ -397,7 +331,8 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
               onTouchEnd={handleTouchEnd}
               isCompetences={true}
             />
-            {/* Backpack */}
+
+            {/* Sac à dos */}
             <Backpack
               skills={skills}
               onDragStart={onDragStart}
@@ -459,3 +394,4 @@ const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: 
 };
 
 export default App;
+  
