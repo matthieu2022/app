@@ -1,3 +1,6 @@
+import { AppBackground } from "./components/AppBackground";
+import { SkillList } from "./components/SkillList";
+import { Backpack } from "./components/Backpack";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
@@ -21,7 +24,7 @@ interface BackpackProps {
     e: DragEvent,
     skill: string,
     source: string,
-    index: number,
+    index: number
   ) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
@@ -151,7 +154,7 @@ const App = () => {
     const touch = e.touches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
     const dropTarget = elements.find(
-      (el) => el.getAttribute("data-droppable") === "true",
+      (el) => el.getAttribute("data-droppable") === "true"
     );
 
     // Retirer la classe drag-over de tous les éléments
@@ -168,7 +171,7 @@ const App = () => {
   const handleTouchEnd = (
     e: React.TouchEvent,
     target: string,
-    targetIndex?: number,
+    targetIndex?: number
   ) => {
     e.preventDefault();
     if (!draggedItem) return;
@@ -176,7 +179,7 @@ const App = () => {
     const touch = e.changedTouches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
     const dropTarget = elements.find(
-      (el) => el.getAttribute("data-droppable") === "true",
+      (el) => el.getAttribute("data-droppable") === "true"
     );
 
     document.querySelectorAll(".drag-over").forEach((el) => {
@@ -193,7 +196,7 @@ const App = () => {
           draggedItem.source,
           draggedItem.index,
           targetId,
-          dropIndex ? parseInt(dropIndex, 10) : undefined,
+          dropIndex ? parseInt(dropIndex, 10) : undefined
         );
       }
     }
@@ -206,7 +209,7 @@ const App = () => {
     e: DragEvent,
     skill: string,
     source: string,
-    index: number,
+    index: number
   ) => {
     e.dataTransfer.setData("skill", skill);
     e.dataTransfer.setData("source", source);
@@ -222,7 +225,7 @@ const App = () => {
   const onDrop = (
     e: DragEvent,
     target: string,
-    targetIndex: number | null = null,
+    targetIndex: number | null = null
   ) => {
     e.preventDefault();
     const skill = e.dataTransfer.getData("skill");
@@ -237,7 +240,7 @@ const App = () => {
     source: string,
     sourceIndex: number,
     target: string,
-    targetIndex: number | null = null,
+    targetIndex: number | null = null
   ) => {
     const isSoftSkill = source === "softSkills";
 
@@ -289,24 +292,24 @@ const App = () => {
       .filter((skill): skill is string => skill !== null);
 
     const rhhSoftSkills = softSkillsInBackpack.filter((skill) =>
-      profileSkills.RHH.includes(skill),
+      profileSkills.RHH.includes(skill)
     );
     const rhhSpecificSkills = specificSkillsInBackpack.filter((skill) =>
-      profileCompetencies.RHH.includes(skill),
+      profileCompetencies.RHH.includes(skill)
     );
 
     const retSoftSkills = softSkillsInBackpack.filter((skill) =>
-      profileSkills.RET.includes(skill),
+      profileSkills.RET.includes(skill)
     );
     const retSpecificSkills = specificSkillsInBackpack.filter((skill) =>
-      profileCompetencies.RET.includes(skill),
+      profileCompetencies.RET.includes(skill)
     );
 
     const catlSoftSkills = softSkillsInBackpack.filter((skill) =>
-      profileSkills.CATL.includes(skill),
+      profileSkills.CATL.includes(skill)
     );
     const catlSpecificSkills = specificSkillsInBackpack.filter((skill) =>
-      profileCompetencies.CATL.includes(skill),
+      profileCompetencies.CATL.includes(skill)
     );
 
     let softSkillsResult = "Profil non associé";
