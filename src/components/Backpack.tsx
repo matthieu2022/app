@@ -10,11 +10,11 @@ export const Backpack = ({
 }: BackpackProps) => (
   <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
     <div className="relative w-full h-full">
-      <img 
+      /*<img 
         src="/sacados.png" 
         alt="Sac à dos"
         className="absolute inset-0 w-full h-full object-contain opacity-90 pointer-events-none"
-      />
+      />*/
       <div className="grid grid-cols-2 gap-4 relative z-10">
         {/* Colonne Soft Skills */}
         <div className="space-y-2">
