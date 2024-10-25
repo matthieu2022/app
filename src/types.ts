@@ -14,11 +14,14 @@ export interface AppBackgroundProps {
 
 export interface ColumnProps {
   id: string;
+  title: string;
   items: string[];
   onDragStart: (e: DragEvent, skill: string, source: string, index: number) => void;
+  onDragOver: (e: DragEvent) => void;
+  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
+  isCompetences?: boolean;
   onTouchStart?: (skill: string, source: string, index: number) => void;
   onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
-  isCompetences?: boolean;
 }
 
 export interface BackpackProps {
