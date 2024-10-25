@@ -1,9 +1,14 @@
 import React from "react";
 
+export interface Skill {
+  id: string;
+  name: string;
+  category: string;
+}
+
 export interface SkillsState {
-  softSkills: string[];
-  specificSkills: string[];
-  backpack: (string | null)[];
+  available: Skill[];
+  backpack: Skill[];
 }
 
 // Event types
@@ -20,7 +25,7 @@ export interface ColumnProps {
     e: DragEvent,
     skill: string,
     source: string,
-    index: number,
+    index: number
   ) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (e: DragEvent, target: string, targetIndex?: number) => void; // Changé ici
@@ -37,7 +42,7 @@ export interface SkillListProps {
     e: DragEvent,
     skill: string,
     source: string,
-    index: number,
+    index: number
   ) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (
@@ -45,7 +50,7 @@ export interface SkillListProps {
     source: string,
     sourceIndex: number,
     target: string,
-    targetIndex?: number,
+    targetIndex?: number
   ) => void;
   isCompetences?: boolean;
   onTouchStart?: (skill: string, source: string, index: number) => void;
@@ -58,7 +63,7 @@ export interface BackpackProps {
     e: DragEvent,
     skill: string,
     source: string,
-    index: number,
+    index: number
   ) => void;
   onDragOver: (e: DragEvent) => void;
   onDrop: (
@@ -66,7 +71,7 @@ export interface BackpackProps {
     source: string,
     sourceIndex: number,
     target: string,
-    targetIndex?: number,
+    targetIndex?: number
   ) => void;
   onTouchStart?: (skill: string, source: string, index: number) => void;
   onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
@@ -123,4 +128,9 @@ export interface TouchHandlers {
   onTouchStart?: (skill: string, source: string, index: number) => void;
   onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
   onTouchMove?: (e: React.TouchEvent) => void;
+}
+
+export interface AppBackgroundProps {
+  children: React.ReactNode;
+  skillsState: SkillsState;
 }
