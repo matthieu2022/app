@@ -4,6 +4,9 @@ import { Backpack } from "./components/Backpack";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
+import { AppBackground } from "./components/AppBackground";  // Attention à la casse
+import { SkillList } from "./components/SkillList";         // Attention à la casse
+import { Backpack } from "./components/Backpack";  
 import "./styles.css";
 
 // Interfaces
