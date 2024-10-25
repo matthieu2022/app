@@ -1,13 +1,45 @@
-import React from 'react';
+import * as React from "react";
 
-export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
-  <div {...props}>{children}</div>
-);
+const Card = React.forwardRef
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={`rounded-lg border bg-white shadow-sm ${className || ''}`}
+      {...props}
+    />
+  );
+});
+Card.displayName = "Card";
 
-export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
-  <div {...props}>{children}</div>
-);
+const CardHeader = React.forwardRef
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={`flex flex-col p-6 ${className || ''}`}
+      {...props}
+    />
+  );
+});
+CardHeader.displayName = "CardHeader";
 
-export const CardContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
-  <div {...props}>{children}</div>
-);
+const CardContent = React.forwardRef
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={`p-6 pt-0 ${className || ''}`}
+      {...props}
+    />
+  );
+});
+CardContent.displayName = "CardContent";
+
+export { Card, CardHeader, CardContent };
