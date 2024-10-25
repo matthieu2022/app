@@ -376,13 +376,13 @@ const App = () => {
           <div className="fixed bottom-4 right-2 md:right-4 space-x-2 z-50">
             <Button
               onClick={handleShowResults}
-              className="text-sm md:text-base bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+              className="text-sm md:text-base bg-blue-500 hover:bg-custom-blue text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
             >
               Résultats
             </Button>
             <Button
               onClick={resetApp}
-              className="text-sm md:text-base bg-red-500 hover:bg-red-600 text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
+              className="text-sm md:text-base bg-red-500 hover:bg-custom-orange text-white px-2 md:px-4 py-2 rounded-lg shadow-md"
             >
               Réinitialiser
             </Button>
