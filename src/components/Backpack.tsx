@@ -1,53 +1,82 @@
-import React from 'react';
-import { Card, CardHeader, CardContent } from './ui/card';
-import { BackpackProps, SkillsState } from '../types';
+import type { BackpackProps } from '../types';
 
-export function Backpack({
+export const Backpack = ({
   skills,
   onDragStart,
   onDragOver,
   onDrop,
   onTouchStart,
-  onTouchEnd
-}: BackpackProps) {
-  return (
-    <Card className="w-full md:w-1/3 bg-white bg-opacity-85">
-      <CardHeader className="bg-custom-blue font-semibold text-white text-center py-1">
-        Mon Sac à Dos
-      </CardHeader>
-      <CardContent className="p-2">
-        <div className="grid grid-cols-1 gap-2">
-          {skills.backpack.map((skill: string | null, index: number) => (
+  onTouchEnd,
+}: BackpackProps) => (
+  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
+    <div className="relative w-full h-full">
+      <img 
+        src="/sacados.png" 
+        alt="Sac à dos"
+        className="absolute inset-0 w-full h-full object-contain opacity-90 pointer-events-none"
+      />
+      <div className="grid grid-cols-2 gap-4 relative z-10">
+        {/* Colonne Soft Skills */}
+        <div className="space-y-2">
+          {skills.backpack.slice(0, 5).map((skill, index) => (
             <div
               key={index}
-              className={`p-2 rounded border ${
-                skill ? 'bg-white shadow-sm' : 'border-dashed'
-              } ${index < 5 ? 'border-blue-300' : 'border-green-300'}`}
               data-droppable="true"
               data-target="backpack"
               data-index={index}
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, "backpack", index)}
               onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index)}
+              className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
             >
-              {skill ? (
+              {skill && (
                 <div
                   draggable
-                  className="cursor-move text-sm"
+                  data-draggable="true"
+                  data-skill={skill}
+                  data-source="backpack"
+                  data-index={index}
                   onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
                   onTouchStart={() => onTouchStart?.(skill, "backpack", index)}
+                  className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
                 >
                   {skill}
-                </div>
-              ) : (
-                <div className="text-center text-gray-400 text-sm">
-                  {index < 5 ? "Soft Skill" : "Compétence"}
                 </div>
               )}
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
-  );
-}
+        {/* Colonne Compétences */}
+        <div className="space-y-2">
+          {skills.backpack.slice(5, 10).map((skill, index) => (
+            <div
+              key={index + 5}
+              data-droppable="true"
+              data-target="backpack"
+              data-index={index + 5}
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, "backpack", index + 5)}
+              onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index + 5)}
+              className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
+            >
+              {skill && (
+                <div
+                  draggable
+                  data-draggable="true"
+                  data-skill={skill}
+                  data-source="backpack"
+                  data-index={index + 5}
+                  onDragStart={(e) => onDragStart(e, skill, "backpack", index + 5)}
+                  onTouchStart={() => onTouchStart?.(skill, "backpack", index + 5)}
+                  className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
+                >
+                  {skill}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
