@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-export interface DragEvent extends React.DragEvent<HTMLDivElement> {}
+export interface DragEvent extends React.DragEvent<HTMLDivElement> {
+  dataTransfer: DataTransfer;
+}
 
 export interface SkillsState {
   softSkills: string[];
