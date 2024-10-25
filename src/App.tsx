@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
-import { SkillsState, DragEvent, ColumnProps, SkillListProps } from "./types";
+import {
+  SkillsState,
+  DragEvent,
+  ColumnProps,
+  SkillListProps,
+  DraggedItem,
+} from "./types";
 import "./styles.css";
 
 // Interfaces
@@ -23,168 +29,8 @@ interface BackpackProps {
   onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
 }
 
-interface DraggedItem {
-  skill: string;
-  source: string;
-  index: number;
-}
-
-const AppBackground = ({ children }: AppBackgroundProps) => (
-  <div className="min-h-screen p-2 md:p-4 relative overflow-x-hidden bg-gray-50">
-    <div className="relative z-10 max-w-full md:max-w-[1400px] mx-auto px-2 md:px-0">
-      <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
-        {children}
-      </div>
-    </div>
-  </div>
-);
-
-const SkillList = ({
-  id,
-  title,
-  items,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  isCompetences,
-}: ColumnProps) => (
-  <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
-    {/* Ajout de l'icône en haut */}
-    <div className="w-full flex justify-center mb-4">
-      <img 
-        src={isCompetences ? "/ico-competences.png" : "/ico-softskills.png"} 
-        alt={isCompetences ? "Compétences" : "Soft Skills"}
-        className="w-16 h-16 md:w-20 md:h-20 object-contain"
-      />
-    </div>
-    <div className="grid grid-cols-1 gap-2">
-      {items.map((skill, index) => (
-        <div
-          key={index}
-          draggable
-          onDragStart={(e) => onDragStart(e, skill, id, index)}
-          className={`p-2 rounded-lg border-2 border-dashed ${
-            isCompetences
-              ? "border-pink-200 bg-pink-50"
-              : "border-blue-200 bg-blue-50"
-          } text-xs md:text-sm cursor-move hover:shadow-md transition-shadow min-h-[40px] md:min-h-[60px] flex items-center justify-center text-center`}
-        >
-          {skill}
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
-
-const handleTouchStart = (skill: string, source: string, index: number) => {
-  setDraggedItem({ skill, source, index });
-};
-
-const handleTouchMove = (e: React.TouchEvent) => {
-  if (!draggedItem) return;
-
-  const touch = e.touches[0];
-  const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-  const dropTarget = elements.find(
-    (el) => el.getAttribute("data-droppable") === "true",
-  );
-
-  if (dropTarget) {
-    dropTarget.classList.add("drag-over");
-  }
-};
-
-const handleTouchEnd = (
-  e: React.TouchEvent,
-  target: string,
-  targetIndex?: number,
-) => {
-  if (!draggedItem) return;
-
-  const touch = e.changedTouches[0];
-  const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-  const dropTarget = elements.find(
-    (el) => el.getAttribute("data-droppable") === "true",
-  );
-
-  if (dropTarget) {
-    const targetId = dropTarget.getAttribute("data-target");
-    const targetIndex = dropTarget.getAttribute("data-index");
-
-    if (targetId) {
-      handleDrop(
-        draggedItem.skill,
-        draggedItem.source,
-        draggedItem.index,
-        targetId,
-        targetIndex ? parseInt(targetIndex, 10) : undefined,
-      );
-    }
-  }
-
-  setDraggedItem(null);
-};
-
-const Backpack = ({ skills, onDragStart, onDragOver, onDrop }: BackpackProps) => (
-  <div className="relative w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
-    {/* Image du sac à dos en arrière-plan */}
-    <div className="absolute inset-0 pointer-events-none">
-      <img 
-        src="/sacados.png" 
-        alt="Sac à dos"
-        className="w-full h-full object-contain opacity-90"
-      />
-    </div>
-    <div className="grid grid-cols-2 gap-4 relative z-10">
-      {/* Colonne Soft Skills */}
-      <div className="space-y-2">
-        {skills.backpack.slice(0, 5).map((skill, index) => (
-          <div
-            key={index}
-            onDragOver={onDragOver}
-            onDrop={(e) => onDrop(e, "backpack", index)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
-          >
-            {skill && (
-              <div
-                draggable
-                onDragStart={(e) => onDragStart(e, skill, "backpack", index)}
-                className="bg-blue-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
-              >
-                {skill}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      {/* Colonne Compétences */}
-      <div className="space-y-2">
-        {skills.backpack.slice(5, 10).map((skill, index) => (
-          <div
-            key={index + 5}
-            onDragOver={onDragOver}
-            onDrop={(e) => onDrop(e, "backpack", index + 5)}
-            className="h-16 md:h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white bg-opacity-80"
-          >
-            {skill && (
-              <div
-                draggable
-                onDragStart={(e) => onDragStart(e, skill, "backpack", index + 5)}
-                className="bg-pink-50 p-2 rounded text-xs md:text-sm cursor-move w-full h-full flex items-center justify-center"
-              >
-                {skill}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
 const App = () => {
+  // États
   const [skills, setSkills] = useState<SkillsState>({
     softSkills: [
       "Empathie",
@@ -222,42 +68,16 @@ const App = () => {
     ],
     backpack: Array(10).fill(null),
   });
-  
+
   const [results, setResults] = useState({
     softSkills: "",
     specificSkills: "",
   });
 
-  const [showResults, setShowResults] = useState(false);
-  
-  const [results, setResults] = useState({
-    softSkills: "",
-    specificSkills: "",
-  });
-  
-  // Ajoutez ces nouveaux états
-  const [draggedItem, setDraggedItem] = useState<{
-    skill: string;
-    source: string;
-    index: number;
-  } | null>(null);
-
-  const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-
-  // Ajoutez effet
-  useEffect(() => {
-    setIsDragging(!!draggedItem);
-  }, [draggedItem]);
-  
   const [showResults, setShowResults] = useState(false);
   const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
-
+  const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    setIsDragging(!!draggedItem);
-  }, [draggedItem]);
 
   // Profils de compétences
   const profileSkills = {
@@ -308,9 +128,21 @@ const App = () => {
     ],
   };
 
+  // Effets
+  useEffect(() => {
+    setIsDragging(!!draggedItem);
+  }, [draggedItem]);
+
+  useEffect(() => {
+    if (skills.backpack.some((skill) => skill !== null)) {
+      updateResults();
+    }
+  }, [skills.backpack]);
+
   // Gestionnaires tactiles
   const handleTouchStart = (skill: string, source: string, index: number) => {
     setDraggedItem({ skill, source, index });
+    setTouchStartPosition({ x: 0, y: 0 }); // Réinitialiser la position
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -318,23 +150,42 @@ const App = () => {
 
     const touch = e.touches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-    const dropTarget = elements.find(el => el.getAttribute('data-droppable') === 'true');
+    const dropTarget = elements.find(
+      (el) => el.getAttribute("data-droppable") === "true",
+    );
 
+    // Retirer la classe drag-over de tous les éléments
+    document.querySelectorAll(".drag-over").forEach((el) => {
+      el.classList.remove("drag-over");
+    });
+
+    // Ajouter la classe drag-over à la cible valide
     if (dropTarget) {
-      dropTarget.classList.add('drag-over');
+      dropTarget.classList.add("drag-over");
     }
   };
 
-  const handleTouchEnd = (e: React.TouchEvent, target: string, targetIndex?: number) => {
+  const handleTouchEnd = (
+    e: React.TouchEvent,
+    target: string,
+    targetIndex?: number,
+  ) => {
+    e.preventDefault();
     if (!draggedItem) return;
 
     const touch = e.changedTouches[0];
     const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-    const dropTarget = elements.find(el => el.getAttribute('data-droppable') === 'true');
+    const dropTarget = elements.find(
+      (el) => el.getAttribute("data-droppable") === "true",
+    );
+
+    document.querySelectorAll(".drag-over").forEach((el) => {
+      el.classList.remove("drag-over");
+    });
 
     if (dropTarget) {
-      const targetId = dropTarget.getAttribute('data-target');
-      const targetIndex = dropTarget.getAttribute('data-index');
+      const targetId = dropTarget.getAttribute("data-target");
+      const dropIndex = dropTarget.getAttribute("data-index");
 
       if (targetId) {
         handleDrop(
@@ -342,7 +193,7 @@ const App = () => {
           draggedItem.source,
           draggedItem.index,
           targetId,
-          targetIndex ? parseInt(targetIndex, 10) : undefined
+          dropIndex ? parseInt(dropIndex, 10) : undefined,
         );
       }
     }
@@ -350,7 +201,7 @@ const App = () => {
     setDraggedItem(null);
   };
 
-  // Gestionnaires d'événements drag & drop
+  // Gestionnaires drag & drop
   const onDragStart = (
     e: DragEvent,
     skill: string,
@@ -364,9 +215,21 @@ const App = () => {
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
-    // Ajoutez une classe visuelle pour le feedback
     const target = e.currentTarget as HTMLElement;
     target.classList.add("drag-over");
+  };
+
+  const onDrop = (
+    e: DragEvent,
+    target: string,
+    targetIndex: number | null = null,
+  ) => {
+    e.preventDefault();
+    const skill = e.dataTransfer.getData("skill");
+    const source = e.dataTransfer.getData("source");
+    const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
+
+    handleDrop(skill, source, sourceIndex, target, targetIndex);
   };
 
   const handleDrop = (
@@ -387,7 +250,9 @@ const App = () => {
         source === "backpack" &&
         sourceIndex >= 5);
 
-    if (!isValidDrop) return;
+    if (!isValidDrop) {
+      return;
+    }
 
     setSkills((prevSkills) => {
       const newSkills = { ...prevSkills };
@@ -414,7 +279,7 @@ const App = () => {
       return newSkills;
     });
   };
-
+  // Fonction de mise à jour des résultats
   const updateResults = () => {
     const softSkillsInBackpack = skills.backpack
       .slice(0, 5)
@@ -423,7 +288,6 @@ const App = () => {
       .slice(5, 10)
       .filter((skill): skill is string => skill !== null);
 
-    // Vérification des correspondances
     const rhhSoftSkills = softSkillsInBackpack.filter((skill) =>
       profileSkills.RHH.includes(skill),
     );
@@ -445,7 +309,6 @@ const App = () => {
       profileCompetencies.CATL.includes(skill),
     );
 
-    // Détermination des profils
     let softSkillsResult = "Profil non associé";
     let specificSkillsResult = "Profil non associé";
 
@@ -523,13 +386,7 @@ const App = () => {
     setDraggedItem(null);
   };
 
-  // Effect pour la mise à jour des résultats
-  useEffect(() => {
-    if (skills.backpack.some((skill) => skill !== null)) {
-      updateResults();
-    }
-  }, [skills.backpack]);
-
+  // Rendu du composant
   return (
     <AppBackground>
       <div className="w-full min-h-screen relative">
@@ -542,12 +399,7 @@ const App = () => {
               items={skills.softSkills}
               onDragStart={onDragStart}
               onDragOver={onDragOver}
-              onDrop={(e: DragEvent, target: string, targetIndex?: number) => {
-                const skill = e.dataTransfer.getData("skill");
-                const source = e.dataTransfer.getData("source");
-                const sourceIndex = parseInt(e.dataTransfer.getData("sourceIndex"), 10);
-                handleDrop(skill, source, sourceIndex, target, targetIndex);
-              }}
+              onDrop={onDrop}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
               isCompetences={false}
@@ -558,7 +410,7 @@ const App = () => {
               items={skills.specificSkills}
               onDragStart={onDragStart}
               onDragOver={onDragOver}
-              onDrop={handleDrop}
+              onDrop={onDrop}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
               isCompetences={true}
@@ -568,7 +420,7 @@ const App = () => {
               skills={skills}
               onDragStart={onDragStart}
               onDragOver={onDragOver}
-              onDrop={handleDrop}
+              onDrop={onDrop}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             />
