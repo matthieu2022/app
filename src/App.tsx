@@ -4,33 +4,9 @@ import { Backpack } from "./components/Backpack";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
-import {
-  SkillsState,
-  DragEvent,
-  ColumnProps,
-  SkillListProps,
-  DraggedItem,
-} from "./types";
 import "./styles.css";
 
 // Interfaces
-interface AppBackgroundProps {
-  children: React.ReactNode;
-}
-
-interface BackpackProps {
-  skills: SkillsState;
-  onDragStart: (
-    e: DragEvent,
-    skill: string,
-    source: string,
-    index: number
-  ) => void;
-  onDragOver: (e: DragEvent) => void;
-  onDrop: (e: DragEvent, target: string, targetIndex?: number) => void;
-  onTouchStart?: (skill: string, source: string, index: number) => void;
-  onTouchEnd?: (e: React.TouchEvent, target: string, index?: number) => void;
-}
 
 const App = () => {
   // États
