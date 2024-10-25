@@ -1,12 +1,14 @@
-import { AppBackground } from "./components/AppBackground";
-import { SkillList } from "./components/SkillList";
-import { Backpack } from "./components/Backpack";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardContent } from "./components/ui/card";
 import { Button } from "./components/ui/button";
-import { AppBackground } from "./components/AppBackground";  // Attention à la casse
-import { SkillList } from "./components/SkillList";         // Attention à la casse
-import { Backpack } from "./components/Backpack";  
+import { AppBackground } from './components/AppBackground';
+import { SkillList } from './components/SkillList';
+import { Backpack } from './components/Backpack';
+import { 
+  SkillsState, 
+  DragEvent, 
+  DraggedItem 
+} from './types';
 import "./styles.css";
 
 // Interfaces
@@ -184,16 +186,13 @@ const App = () => {
   };
 
   // Gestionnaires drag & drop
-  const onDragStart = (
-    e: DragEvent,
-    skill: string,
-    source: string,
-    index: number
-  ) => {
+const onDragStart = (e: React.DragEvent<HTMLDivElement>, skill: string, source: string, index: number) => {
+  if (e.dataTransfer) {
     e.dataTransfer.setData("skill", skill);
     e.dataTransfer.setData("source", source);
     e.dataTransfer.setData("sourceIndex", index.toString());
-  };
+  }
+};
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
