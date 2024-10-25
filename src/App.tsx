@@ -304,7 +304,11 @@ const App = () => {
   return (
     <AppBackground>
       <div className="w-full min-h-screen relative">
-        <div className="container mx-auto px-2 md:px-4">
+        <div className="container mx-auto px-2 md:px-4"><img 
+        src="/fdp_sacados.png" 
+        alt="Sac à dos"
+        className="absolute inset-0 w-full h-full object-contain opacity-90 pointer-events-none"
+      />
           <div className="flex flex-col md:flex-row justify-center items-start gap-4 md:gap-8">
             {/* Colonne Soft Skills */}
             <SkillList
