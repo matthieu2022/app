@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, CardHeader, CardContent } from "./ui/card";
-import { BackpackProps } from "../types";
+import React from 'react';
+import { Card, CardHeader, CardContent } from './ui/card';
+import { BackpackProps, SkillsState } from '../types';
 
 export function Backpack({
   skills,
@@ -17,12 +17,12 @@ export function Backpack({
       </CardHeader>
       <CardContent className="p-2">
         <div className="grid grid-cols-1 gap-2">
-          {skills.backpack.map((skill, index) => (
+          {skills.backpack.map((skill: string | null, index: number) => (
             <div
               key={index}
               className={`p-2 rounded border ${
-                skill ? "bg-white shadow-sm" : "border-dashed"
-              } ${index < 5 ? "border-blue-300" : "border-green-300"}`}
+                skill ? 'bg-white shadow-sm' : 'border-dashed'
+              } ${index < 5 ? 'border-blue-300' : 'border-green-300'}`}
               data-droppable="true"
               data-target="backpack"
               data-index={index}
