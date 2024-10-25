@@ -2,16 +2,15 @@ import type { ColumnProps } from '../types';
 
 export const SkillList = ({
   id,
-  items,
   title,
+  items,
   onDragStart,
+  onDragOver,
+  onDrop,
   onTouchStart,
   onTouchEnd,
-  onDragOver,
-  onDrop
-  }: ColumnProps) => {
-  return (
-    <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
+  isCompetences,
+}: ColumnProps) => {
   return (
     <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
       <div className="w-full flex justify-center mb-4">
@@ -32,13 +31,15 @@ export const SkillList = ({
             data-source={id}
             data-index={index}
             onDragStart={(e) => onDragStart(e, skill, id, index)}
+            onDragOver={onDragOver}
+            onDrop={(e) => onDrop(e, id)}
             onTouchStart={(e) => {
               e.preventDefault();
               onTouchStart?.(skill, id, index);
             }}
             onTouchEnd={(e) => {
               e.preventDefault();
-              onTouchEnd?.(e, id, index);
+              onTouchEnd?.(e, id);
             }}
             className={`skill-item p-2 rounded-lg border-2 border-dashed ${
               isCompetences
