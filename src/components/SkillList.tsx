@@ -2,17 +2,13 @@ import type { ColumnProps } from '../types';
 
 export const SkillList = ({
   id,
-  title,
   items,
   onDragStart,
-  onDragOver,
-  onDrop,
   onTouchStart,
   onTouchEnd,
   isCompetences,
-}: ColumnProps) => (
+}: Omit<ColumnProps, 'title' | 'onDragOver' | 'onDrop'>) => (
   <div className="w-full md:w-1/3 lg:w-1/4 mt-[20px] md:mt-[50px] px-2 md:px-4">
-    <div className="w-full flex justify-center mb-4">
       <img 
         src={isCompetences ? "/ico-competences.png" : "/ico-softskills.png"} 
         alt={isCompetences ? "Compétences" : "Soft Skills"}
