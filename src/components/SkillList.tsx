@@ -19,7 +19,6 @@ export const SkillList = ({
           alt={isCompetences ? "Compétences" : "Soft Skills"}
           className="w-16 h-16 md:w-20 md:h-20 object-contain"
         />
-        <h3>Compétences métiers</h3>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
