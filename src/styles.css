@@ -4,7 +4,7 @@
 
 /* Nos styles personnalisés */
 .drag-over {
-  border-color: #4299e1;
+  /*border-color: #4299e1;*/
   border-style: solid;
   opacity: 0.8;
   transform: scale(1.02);
