@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "orientation": "landscape",
-    "display": "standalone",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
