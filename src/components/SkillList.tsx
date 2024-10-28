@@ -17,7 +17,7 @@ export const SkillList = ({
         <img 
           src={isCompetences ? "/ico-competences.png" : "/ico-softskills.png"} 
           alt={isCompetences ? "Compétences" : "Soft Skills"}
-          className="w-16 h-16 md:w-20 md:h-20 object-contain"
+          className="w-24 h-24 md:w-56 md:h-40 object-contain"
         />
       </div>
 
