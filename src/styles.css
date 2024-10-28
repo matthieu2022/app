@@ -77,5 +77,6 @@
 }
 .drag-over {
   border-color: #308dc2;
-  background-color: rgba(48, 141, 194, 0.1);
+  background-color: #ffcc66;
+  /*background-color: rgba(48, 141, 194, 0.1);*/
 }
