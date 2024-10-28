@@ -48,13 +48,23 @@ const App = () => {
 
 
   // ajout useffect
+useEffect(() => {
+  // Définition du type pour screen.orientation
+  interface ScreenOrientationAPI extends ScreenOrientation {
+    lock(orientation: OrientationLockType): Promise<void>;
+  }
 
-  useEffect(() => {
-  // Forcer le mode paysage
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('landscape').catch((error) => {
-      console.log("Orientation lock failed:", error);
-    });
+  try {
+    if (screen.orientation) {
+      // Cast screen.orientation vers le type étendu
+      const screenOrientation = screen.orientation as ScreenOrientationAPI;
+      screenOrientation.lock('landscape')
+        .catch((error: Error) => {
+          console.log("Orientation lock failed:", error);
+        });
+    }
+  } catch (error) {
+    console.log("Screen orientation API not supported");
   }
 }, []);
   
