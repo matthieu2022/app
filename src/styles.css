@@ -76,12 +76,17 @@
   background-color: #ffcc66;
 }
 
-/* Pour permettre le scroll sur les conteneurs principaux */
+body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch; /* Pour un meilleur scroll sur iOS */
+}
+
+/* Pour permettre le scroll sur les conteneurs principaux 
 .container {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   height: 100%;
-}
+}*/
 
 /* problèmes de taille sur mobile */
 @media (max-width: 768px) {
