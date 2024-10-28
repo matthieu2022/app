@@ -11,9 +11,9 @@ export const Backpack = ({
   <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
     <div className="relative w-full h-full">
 
-      <div className="grid grid-cols-2 gap-4 relative z-10 mt-60">
+      <div className="grid grid-cols-2 gap-4 relative z-10 mt-70">
         {/* Colonne Soft Skills */}
-        <div className="space-y-2 w-[150px]">
+        <div className="space-y-2 w-[175px] mt-[25px]">
           {skills.backpack.slice(0, 5).map((skill, index) => (
             <div
               key={index}
@@ -23,7 +23,7 @@ export const Backpack = ({
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, "backpack", index)}
               onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index)}
-              className="h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-4"
+              className="h-18 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-4"
             >
               {skill && (
                 <div
@@ -43,7 +43,7 @@ export const Backpack = ({
           ))}
         </div>
         {/* Colonne Compétences */}
-        <div className="space-y-2 w-[150px]">
+        <div className="space-y-2 w-[175px] mt-[25px]">
           {skills.backpack.slice(5, 10).map((skill, index) => (
             <div
               key={index + 5}
@@ -53,7 +53,7 @@ export const Backpack = ({
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, "backpack", index + 5)}
               onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index + 5)}
-              className="h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-4"
+              className="h-18 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center ml-4"
             >
               {skill && (
                 <div
