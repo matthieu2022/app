@@ -8,7 +8,7 @@ export const Backpack = ({
   onTouchStart,
   onTouchEnd,
 }: BackpackProps) => (
-  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[7rem] px-4">
+  <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[8rem] px-4">
     <div className="relative w-full h-full">
 
       <div className="grid grid-cols-2 gap-[8rem] md:gap-[7rem] lg:gap-[6rem] xl:gap-[5rem] 2xl:gap-[8rem] relative w-[250px] z-10 mt-[50px] ml-[160px]">
