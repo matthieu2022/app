@@ -53,7 +53,7 @@ export const Backpack = ({
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, "backpack", index + 5)}
               onTouchEnd={(e) => onTouchEnd?.(e, "backpack", index + 5)}
-              className="h-16 xl:h-[3.4rem] border-2 border-dashed border-blue-300 rounded-lg flex items-center justify-center ml-4"
+              className="h-16 xl:h-[3.4rem] border-2 border-dashed border-pink-300 rounded-lg flex items-center justify-center ml-4"
             >
               {skill && (
                 <div
