@@ -11,7 +11,7 @@ export const Backpack = ({
   <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[100px] px-4">
     <div className="relative w-full h-full">
 
-      <div className="grid grid-cols-2 gap-4 relative z-10">
+      <div className="grid grid-cols-2 gap-4 relative z-10 mt-60">
         {/* Colonne Soft Skills */}
         <div className="space-y-2">
           {skills.backpack.slice(0, 5).map((skill, index) => (
