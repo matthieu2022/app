@@ -75,5 +75,17 @@
 .bg-custom-orange {
   background-color: #ffcc66;
 }
-.drag-over {
+
+/* Pour permettre le scroll sur les conteneurs principaux */
+.container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+}
+
+/* problèmes de taille sur mobile */
+@media (max-width: 768px) {
+  .container {
+    min-height: -webkit-fill-available;
+  }
 }
