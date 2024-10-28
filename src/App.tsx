@@ -19,7 +19,7 @@ const App = () => {
     specificSkills: [
       "Accueillir, informer et conseiller le client",
       "Traiter les demandes de réservations",
-      "Procéder aux opérations d'arrivée, de suivi, de départ client",
+      "Procéder aux opérations client",
       "Assurer le suivi de l'activité journalière",
       "Contribuer au développement commercial",
       "Gérer les opérations de l'établissement",
