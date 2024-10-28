@@ -47,18 +47,15 @@ const App = () => {
   const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
 
 
-  // ajout useffect
 useEffect(() => {
-  // Définition du type pour screen.orientation
   interface ScreenOrientationAPI extends ScreenOrientation {
-    lock(orientation: OrientationLockType): Promise<void>;
+    lock(orientation: OrientationType): Promise<void>;
   }
 
   try {
     if (screen.orientation) {
-      // Cast screen.orientation vers le type étendu
       const screenOrientation = screen.orientation as ScreenOrientationAPI;
-      screenOrientation.lock('landscape')
+      screenOrientation.lock('landscape-primary')  // Utilisez 'landscape-primary' au lieu de juste 'landscape'
         .catch((error: Error) => {
           console.log("Orientation lock failed:", error);
         });
