@@ -46,6 +46,18 @@ const App = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
 
+
+  // ajout useffect
+
+  useEffect(() => {
+  // Forcer le mode paysage
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('landscape').catch((error) => {
+      console.log("Orientation lock failed:", error);
+    });
+  }
+}, []);
+  
   // Profils de compétences
   const profileSkills = {
     RHH: [
