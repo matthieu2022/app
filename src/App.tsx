@@ -251,19 +251,19 @@ useEffect(() => {
     let specificSkillsResult = "Profil non associé";
 
     if (rhhSoftSkills.length >= 3) {
-      softSkillsResult = "Réceptionniste d'Hôtel (RHH)";
+      softSkillsResult = "Réceptionniste";
     } else if (retSoftSkills.length >= 3) {
-      softSkillsResult = "Responsable d'Établissement Touristique (RET)";
+      softSkillsResult = "Adjoint au Responsable";
     } else if (catlSoftSkills.length >= 3) {
-      softSkillsResult = "Conseiller en Agence de Tourisme et Loisirs (CATL)";
+      softSkillsResult = "Chargé d'Accueil Loisirs Tourisme";
     }
 
     if (rhhSpecificSkills.length >= 3) {
-      specificSkillsResult = "Réceptionniste d'Hôtel (RHH)";
+      specificSkillsResult = "Réceptionniste";
     } else if (retSpecificSkills.length >= 3) {
-      specificSkillsResult = "Responsable d'Établissement Touristique (RET)";
+      specificSkillsResult = "Adjoint au Responsable";
     } else if (catlSpecificSkills.length >= 3) {
-      specificSkillsResult = "Conseiller en Agence de Tourisme et Loisirs (CATL)";
+      specificSkillsResult = "Chargé d'Accueil Loisirs Tourisme";
     }
 
     setResults({
