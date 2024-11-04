@@ -247,8 +247,8 @@ useEffect(() => {
       profileCompetencies.CATL.includes(skill)
     );
 
-    let softSkillsResult = "Profil non associé";
-    let specificSkillsResult = "Profil non associé";
+    let softSkillsResult = "Tu as besoin d'un profil polyvalent de type Chargé d'Accueil ou Directeur Adjoint !";
+    let specificSkillsResult = "Tu as besoin d'un profil polyvalent de type Chargé d'Accueil ou Directeur Adjoint !";
 
     if (rhhSoftSkills.length >= 3) {
       softSkillsResult = "Réceptionniste";
