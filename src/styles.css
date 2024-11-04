@@ -79,6 +79,7 @@
 body {
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch; /* Pour un meilleur scroll sur iOS */
+  overflow-y: auto;
 }
 
 /* Pour permettre le scroll sur les conteneurs principaux 
