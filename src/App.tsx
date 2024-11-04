@@ -368,14 +368,14 @@ useEffect(() => {
 
           {/* Modal des résultats */}
           {showResults && (
-            <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-85 shadow-lg z-50">
+            <Card className="fixed top-4 left-2 right-2 md:left-1/2 md:transform md:-translate-x-1/2 w-auto md:w-full md:max-w-2xl bg-white bg-opacity-100 shadow-lg z-50">
               <CardHeader className="bg-custom-blue font-semibold text-white text-center text-base md:text-lg py-0.5">
                 Résultats de votre recherche de profil
               </CardHeader>
               <CardContent className="p-2 md:p-4">
                 <div className="space-y-2">
                   <hr />
-                  <h3 className="font-semibold">
+                  <h3 className="font-semibold text-center">
                     Le Profil que nous trouvons selon vos choix de Soft Skills
                   </h3>
                   <hr />
@@ -383,7 +383,7 @@ useEffect(() => {
                     {results.softSkills || "Aucun résultat"}
                   </p>
                   <hr />
-                  <h3 className="font-semibold">
+                  <h3 className="font-semibold text-center">
                     Le Profil que nous trouvons selon vos choix de Compétences
                   </h3>
                   <hr />
