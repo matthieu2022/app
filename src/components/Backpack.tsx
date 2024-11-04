@@ -11,7 +11,7 @@ export const Backpack = ({
   <div className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-4 md:mt-[8rem] px-4">
     <div className="relative w-full h-full">
 
-      <div className="grid grid-cols-2 gap-[8rem] md:gap-[7rem] lg:gap-[2rem] xl:gap-[5rem] 2xl:gap-[8rem] relative w-[250px] z-10 md:mt[50px] lg:mt[50px] lg:mt-[135px] xl:mt[50px] 2xl:mt[50px] ml-[160px] lg:ml-[160px]">
+      <div className="grid grid-cols-2 gap-[8rem] md:gap-[7rem] lg:gap-[2rem] xl:gap-[5rem] 2xl:gap-[8rem] relative w-[250px] z-10 md:mt[50px] lg:mt[50px] lg:mt-[50px] xl:mt[50px] 2xl:mt[50px] ml-[160px] lg:ml-[160px]">
         
         {/* Colonne Soft Skills */}
         <div className="space-y-2 w-[175px] md:mt-[225px] md:w-[175px] lg:mt-[170px] lg:w-[150px] xl:mt-[320px] xl:w-[145px] 2xl:mt-[225px] 2xl:w-[175px]">
